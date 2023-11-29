@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Page</title>
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.3/firebase-database.js"></script>
+    <!-- Include your Firebase configuration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+</head>
+<body>
+    <h1>Upload Music</h1>
+    <form id="uploadForm">
+        <label for="musicTitle">Music Title:</label>
+        <input type="text" id="musicTitle" name="musicTitle" required>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required>
+
+        <label for="musicFile">Select Music File:</label>
+        <input type="file" id="musicFile" name="musicFile" accept="audio/*" required>
+
+        <label for="imageFile">Select Image File:</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+
+        <button type="button" onclick="uploadFile()">Upload</button>
+    </form>
+
+    <script>
+        // Setting up Firebase with our website
+        const firebaseConfig = {
+  apiKey: "AIzaSyCRDHxxkCXyNZ9BdJhDlZKpOkLu2FZHmh8",
+  authDomain: "auth-form-2eb89.firebaseapp.com",
+  databaseURL: "https://auth-form-2eb89-default-rtdb.firebaseio.com",
+  projectId: "auth-form-2eb89",
+  storageBucket: "auth-form-2eb89.appspot.com",
+  messagingSenderId: "532774111499",
+  appId: "1:532774111499:web:de3f1759a2fbf70c27ba0e"
+};
+
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const db = firebaseApp.database(); // Use Realtime Database instead of Firestore
+
+        function uploadFile() {
+            // Get input values
+            const musicTitle = document.getElementById('musicTitle').value;
+            const category = document.getElementById('category').value;
+            const musicFile = document.getElementById('musicFile').files[0];
+            const imageFile = document.getElementById('imageFile').files[0];
+
+            // Create a unique ID for the files
+            const fileId = Date.now().toString();
+
+            // Get references to Firebase Storage
+            const storageRef = firebase.storage().ref(`music/${fileId}`);
+
+            // Upload music file to Firebase Storage
+            const musicTask = storageRef.child(`${fileId}.mp3`).put(musicFile);
+
+            // Upload image file to Firebase Storage
+            const imageTask = storageRef.child(`${fileId}.jpg`).put(imageFile);
+
+            // Wait for both tasks to complete
+            Promise.all([musicTask, imageTask])
+                .then(() => {
+                    // Get download URLs for the uploaded files
+                    return Promise.all([musicTask.snapshot.ref.getDownloadURL(), imageTask.snapshot.ref.getDownloadURL()]);
+                })
+                .then((urls) => {
+                    const musicUrl = urls[0];
+                    const imageUrl = urls[1];
+
+                    // Save metadata to Firebase Realtime Database
+                    db.ref('music/' + fileId).set({
+                        title: musicTitle,
+                        category: category,
+                        musicUrl: musicUrl,
+                        imageUrl: imageUrl
+                    });
+
+                    alert('Upload successful!');
+                })
+                .catch(error => {
+                    console.error(error.message);
+                    alert('Upload failed. Please try again.');
+                });
+        }
+    </script>
+</body>
+</html>

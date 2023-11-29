@@ -1,0 +1,151 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+header {
+    background-color: rgba(158, 140, 229, 0.7);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#logout{
+    display: flex;
+    justify-content: right;
+    text-align: right;
+}
+.logo {
+    max-width: 100px;
+    margin-right: 40px;
+}
+
+h1 {
+    margin: 0;
+}
+
+nav {
+    background-color: rgba(158, 140, 229, 0.7);
+    padding: 10px;
+    text-align: center;
+    /* position: relative; Add relative positioning to create a stacking context */
+    z-index: 1; /* Add a z-index to make sure the nav appears above other elements */
+}
+
+.container {
+    width: 40vw;
+    margin: 10vh auto;
+    overflow: hidden;
+    box-shadow: 10px 25px 30px rgba(30, 30, 200, 0.3);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    margin: 5px;
+}
+
+
+
+.wrapper {
+    width: inherit;
+    display: flex;
+    animation: slide 15s infinite;
+}
+
+.wrapper img {
+    flex: 0 0 25%;
+}
+
+@keyframes slide {
+    0%, 20%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30% {
+        transform: translateX(-100%);
+    }
+    31%, 60% {
+        transform: translateX(-160%);
+    }
+    61%, 90% {
+        transform: translateX(-290%);
+    }
+
+}
+.container2{
+    color: azure;
+    text-align: center;
+    border: azure 2px solid;
+    border-radius: 25px;
+}
+
+.categories {
+    text-align: center;
+    margin: 20px auto; /* Adjusted margin */
+    display: flex;
+    flex-direction: row;
+}
+
+.index-category-box {
+    width: 200px;
+    height: 200px;
+    background-color: #111;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 2% 4vw;
+    z-index: -1;
+}
+
+.index-category-box:nth-child(1) {
+    background-image: url("music.jpg");
+}
+
+.index-category-box:nth-child(2) {
+    background-image: url("music.jpg");
+}
+
+.index-category-box:nth-child(3) {
+    background-image: url("music.jpg");
+}
+
+.index-category-box:hover {
+    opacity: 0.5;
+}
+
+.index-category-box h3 {
+    font-size: 22px;
+    line-height: 28px;
+    text-align: center;
+    text-shadow: -2px 2px 4px #000;
+    margin: 0;
+    z-index: 100;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
